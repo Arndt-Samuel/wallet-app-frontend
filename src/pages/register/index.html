@@ -3,6 +3,7 @@
     <head>
         <title>Wallet App - Cadastramento</title>
         <link rel="stylesheet" href="../../../styles.css">
+        <script src="index.js"></script>
         <body>
             <div class="auth-container">
                 <div class="auth-content">
@@ -10,11 +11,13 @@
                         <img class="logo" src="../../img/logo.png" alt="Logo">
                         <h3 class="full-width text-left mt larger">Novo Cadastro</h3>
                         <p class="mt small">Insira seu nome e seu e-mail para ter acesso ao Wallet app e gerenciar suas finanças</p>
-                        <label class="mt" for="input-name">Nome</label>
-                        <input placeholder="Ex: José da Silva" class="mt smaller" id="input-name" name="input-name" type=""/>
-                        <label class="mt" for="input-email">E-mail</label>
-                        <input placeholder="email@exemplo.com" class="mt smaller" id="input-email" name="input-email" type="email"/>
-                        <button class="full-width mt large">Cadastrar</button>
+                        <form id="form-register" class="mt">
+                            <label for="input-name">Nome</label>
+                            <input placeholder="Ex: José da Silva" class="mt smaller" id="input-name" name="input-name" required/>
+                            <label class="mt" for="input-email">E-mail</label>
+                            <input placeholder="email@exemplo.com" class="mt smaller" id="input-email" name="input-email" type="email" required/>
+                            <button class="full-width mt large" type="submit">Cadastrar</button>
+                        </form>
                         <a href="../../../index.html" class="mt larger">Já possui uma conta ? Faça o seu login</a>
                     </div>
                 </div>
