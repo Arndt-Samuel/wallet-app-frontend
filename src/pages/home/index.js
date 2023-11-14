@@ -1,4 +1,9 @@
-    const onDeleteItem = async (id) => {
+    const onLogout = () => {
+      localStorage.clear();
+      window.open("../../../index.html", "_self");
+    };
+   
+   const onDeleteItem = async (id) => {
     try {
         const email = localStorage.getItem("@WalletApp:userEmail");
   
@@ -96,13 +101,13 @@
 }
 
 
-const renderFinancesElements = (data) => {
+const renderFinanceElements = (data) => {
     const totalItems = data.length;
     const revenues = data
-    .filter(item => Number(item.value) > 0)
+    .filter((item) => Number(item.value) > 0)
     .reduce((acc, item) => acc +  Number(item.value), 0); 
     const expenses = data
-    .filter(item => Number(item.value) < 0)
+    .filter((item) => Number(item.value) < 0)
     .reduce((acc, item) => acc +  Number(item.value), 0);
     const totalValue = revenues + expenses;
 
@@ -185,16 +190,18 @@ const renderFinancesElements = (data) => {
 
 const onLoadFinancesData = async () => {
     try {
-        const date = '2022-12-15';
+        const dateInputValue = document.getElementById("selected-date").value;
         const email = localStorage.getItem('@WalletApp:userEmail');
-        const result = await fetch(`https://mp-wallet-app-api.herokuapp.com/finances?date=${date}`, {
+        const result = await fetch(`https://mp-wallet-app-api.herokuapp.com/finances?date=${dateInputValue}`, {
             method: 'GET',
             headers: {
                 email: email,
             },
         });
         const data = await result.json();
-        renderFinancesElements(data)
+        renderFinanceElements(data);
+        renderFinancesList(data);
+        return data;
     } catch (error) {
         return {error}
     }
@@ -212,9 +219,11 @@ const onLoadUserInfo = () => {
     const emailElement =  document.createElement('p');
     const emailText = document.createTextNode(email);
     emailElement.appendChild(emailText);
-    navbarUserInfo.appendChild(emailText);
+    navbarUserInfo.appendChild(emailElement);
 
     const logoutElement = document.createElement('a');
+    logoutElement.onclick = () => onLogout();
+    logoutElement.style.cursor = "pointer;";
     const logoutText = document.createTextNode('sair');
     logoutElement.appendChild(logoutText);
     navbarUserInfo.appendChild(logoutElement);
@@ -305,8 +314,18 @@ const onLoadCategories = async () => {
     }
   };
 
+  const setInitialDate = () => {
+    const dateInput = document.getElementById("selected-date");
+    const nowDate = new Date().toISOString().split("T")[0];
+    dateInput.value = nowDate;
+    dateInput.addEventListener("change", () => {
+      onLoadFinancesData();
+    });
+  };
+
 
 window.onload = ()  => {
+    setInitialDate();
     onLoadUserInfo();
     onLoadFinancesData();
     onLoadCategories();
